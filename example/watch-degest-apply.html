@@ -1,0 +1,133 @@
+ See more here:
+<br>
+https://www.tutlane.com/tutorial/angularjs/angularjs-watch-digest-and-apply-functions
+<br>
+https://www.dotnettricks.com/learn/angularjs/understanding-angularjs-watch-digest-and-apply
+<script src="../libs/angular.js"></script>
+<div ng-app="myApp">
+	============== Example for watch ===================
+	<div ng-controller="personCtrl">
+
+		<p>
+			Tên: <input type="text" ng-model="firstName">
+		</p>
+		<p>
+			Họ: <input type="text" ng-model="lastName">
+		</p>
+		<p>Họ & Tên old: {{fullName()}}</p>
+
+	</div>
+	<script>
+		var app = angular.module('myApp', []);
+		app.controller('personCtrl', function($scope, $rootScope) {
+			$scope.firstName = "Trần Văn";
+			$scope.fullName = function() {
+				return $scope.firstName + " " + $scope.lastName;
+			};
+			var i = 0;
+			$scope.$watch(function(scope) { // the function is fired whenever variable change
+				if (i < 5) {
+					i++
+				}
+				return i
+			}, function(newValue, oldValue) { // the function is fired if newValue != oldValue
+				$scope.lastName = newValue;
+			});
+		});
+	</script>
+	============== Example for degest ===================
+
+	<div ng-controller="digestCtrl">
+
+		<h2>AngularJS $digest() Function Example</h2>
+
+		<input type="button" value="Click to Update DateTime"
+			ng-click="updatedtime()" /> The button uses "ng-click" event <br>
+		<input type="button" value="Click to Update DateTime forcefully."
+			id="btndigest" /> The button's Event is normal added(outside angular
+		context), so need to execute "$digest" function to update date time
+		forcefully, uncomment line 72<br /> <br /> <span style="color: Red">Current
+			Date Time: {{currentDateTime | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+
+	</div>
+
+	<script type="text/javascript">
+		app.controller('digestCtrl', function($scope) {
+
+			$scope.currentDateTime = new Date();
+
+			$scope.updatedtime = function() {
+
+				$scope.currentDateTime = new Date();
+
+			}
+
+			//Added an event listener.
+
+			var event = document.getElementById("btndigest");
+
+			event.addEventListener('click', function() {
+
+				//get dateTime
+
+				$scope.currentDateTime = new Date();
+
+				//The digest method is use to update date time forcefully.
+
+				//$scope.$digest();
+
+			});
+
+		});
+	</script><br>
+	============== Example for apply ===================<br><br>
+	Angular do auto-magically updates only those model changes which are inside AngularJS context. <br>
+	When you do change in any model outside of the Angular context (like browser DOM events, setTimeout, XHR or third party libraries), <br>
+	then you need to inform Angular of the changes by calling $apply() manually.  <br>
+	When the $apply() function call finishes AngularJS calls $digest() internally, so all data bindings are updated.
+	<div ng-controller="applyCtrl">
+
+		<h2>AngularJS $apply() Function Example</h2>
+
+		<input type="button" value="Click to Update DateTime"
+			ng-click="updatedtime()" /> <input type="button"
+			value="Click to Update DateTime forcefully." id="btnapply" /> <br />
+		<br /> <span style="color: Red">Current Date Time:
+			{{currentDateTime | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+
+	</div>
+	<script type="text/javascript">
+
+		app.controller('applyCtrl', function($scope) {
+
+			$scope.currentDateTime = new Date();
+
+			$scope.updatedtime = function() {
+
+				$scope.currentDateTime = new Date();
+
+			}
+
+			//Added an event listener.
+
+			var event = document.getElementById("btnapply");
+
+			event.addEventListener('click', function() {
+
+				//The $apply method is use to update date time on rootScope forcefully.
+
+				$scope.$apply(function() {
+
+					//get dateTime
+
+					$scope.currentDateTime = new Date();
+
+				});
+
+			});
+
+		});
+	</script>
+</div>
+
+

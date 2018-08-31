@@ -1,0 +1,16 @@
+<script src="../libs/angular.js"></script>
+<div ng-app="myApp" ng-controller="personCtrl">
+
+	<button ng-disabled="{{disabled}}">Disabled</button>
+	<button disabled="chi cung dc">Disabled</button>
+	<svg>
+  <circle ng-attr-cx="{{cx}}"></circle>
+</svg>
+</div>
+<script>
+	var app = angular.module('myApp', []);
+	app.controller('personCtrl', function($scope, $rootScope) {
+		$scope.cx = "a";
+		$scope.disabled = true;
+	});
+</script>

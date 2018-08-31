@@ -1,0 +1,64 @@
+<html ng-app="myApp">
+<head>
+<title>exmApp</title>
+<script src="../libs/angular.js"></script>
+
+</head>
+<body ng-controller="MyController">
+</body>
+</html>
+<script type="text/javascript">
+	var myApp = angular.module('myApp', []);
+
+	//service style, probably the simplest one
+	myApp.service('helloWorldFromService', function() {
+		this.a = 'hi';
+		this.sayHello = function() {
+			return 'b'
+		};
+	});
+
+	//factory style, more involved but more sophisticated
+	myApp.factory('helloWorldFromFactory', function() {
+		var self = this;
+		return {
+			a: 'hi',
+			sayHello : function() {
+				return self.a
+			}
+		};
+	});
+
+	//provider style, full blown, configurable version     
+	myApp.provider('helloWorld', function() {
+
+		this.name = 'Default';
+
+		this.$get = function() {
+			var name = this.name;
+			return {
+				sayHello : function() {
+					return "Hello, " + name + "!"
+				}
+			}
+		};
+
+		this.setName = function(name) {
+			this.name = name;
+		};
+	});
+
+	//hey, we can configure a provider!            
+	myApp.config(function(helloWorldProvider) {
+		helloWorldProvider.setName('World');
+	});
+
+	myApp.controller('MyController', function($scope, helloWorld, helloWorldFromFactory,
+			helloWorldFromService) {
+		console.log(helloWorldFromService.a);
+		$scope.hellos = [ helloWorld.sayHello(),
+				helloWorldFromFactory.sayHello(),
+				helloWorldFromService.sayHello() ];
+		console.log($scope.hellos);
+	})
+</script>

@@ -1,0 +1,70 @@
+<script src="../libs/angular.js"></script>
+see more here:
+<br>
+http://excellencenodejsblog.com/angularjs-directive-compile-pre-link-post-link-controller-functions/
+<br>
+Show debugging to flow example - Press F12
+<br>
+<div ng-app="myApp">
+	<my-dir> Parent <my-dir>Child</my-dir> </my-dir><br /><br>
+	<my-dad> {{greeting}} <br />
+	<my-son> {{sonSays}} </my-son> </my-dad>
+</div>
+<script>
+	var app = angular.module('myApp', []);
+	app.directive("myDir", function() {
+		return {
+			//restrict : 'E',
+			controller : function($scope, $element) {
+				console.log(': controller');
+				console.log($element.html());
+			},
+			compile : function(tElem, tAttrs) {
+				console.log(': compile');
+				console.log(tElem.html());
+				return {
+					pre : function(scope, iElem, iAttrs) {
+						console.log(': pre link');
+						console.log(iElem.html());
+					},
+					post : function(scope, iElem, iAttrs) {
+						console.log(': post link');
+						console.log(iElem.html());
+					}
+				}
+			}
+		}
+	});
+	app.directive('myDad',function() {
+		return {
+			restrict : 'E',
+			controller : function($scope) {
+				$scope.name = 'XXX';
+				$scope.greeting = 'Hello!';
+				$scope.click1 = function() {
+					alert('click1');
+				}
+				$scope.click2 = function() {
+					alert('click2');
+				}
+			},
+			compile : function(tHtml, tAttr) {
+				tHtml.append('<div ng-click="click1();">Adding New Link in Complie with ng-click</div>')
+				return {
+					post : function(scope, ele, attr) {
+						ele.append('<div ng-click="click2();">Adding New Link In Post Link with ng-click</div>')
+					}
+				}
+			}
+		}
+	});
+	app.directive('mySon', function() {
+		return {
+			restrict : 'E',
+			require : '^myDad',
+			link : function(scope, elem, attr) {
+				scope.sonSays = 'Hey, I am son, and my dad is ' + scope.name;
+			}
+		}
+	});
+</script>

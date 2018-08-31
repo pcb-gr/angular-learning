@@ -1,0 +1,21 @@
+<script src="../libs/angular.js"></script>
+<div class="show-scope-demo" ng-app="scopeExample">
+	<div ng-controller="GreetController">{{jeff}} Hello {{name}}!</div>
+	<div ng-controller="ListController">
+		<ol>
+			<li ng-repeat="name in names">{{jeff}} {{name}} from {{department}}</li>
+		</ol>
+	</div>
+</div>
+
+<script>
+	angular.module('scopeExample', [])
+	.controller('GreetController', function($scope, $rootScope) {// $scope, $rootScope là provider default
+				$scope.name = 'World';
+				$rootScope.department = 'AngularJS'; // phạm vi toàn cục nên có thể binding từ scope bất kỳ
+				$scope.jeff = "jeff"; // biến jeff chỉ tồn tại ở scope GreetController nên sẽ k binding được ở scope khác
+			})
+	.controller('ListController', [ '$scope', function($scopeCustomVariable) { //$scopeCustomVariable => custome lại name của $scope
+		$scopeCustomVariable.names = [ 'Igor', 'Misko', 'Vojta' ];
+	}]);
+</script>

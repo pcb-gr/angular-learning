@@ -1,0 +1,19 @@
+<script src="../libs/angular.js"></script>
+see more here:
+<br>
+<p>There is one injector per Angular application. Normally you don't
+	need to interact with it directly. The injector is key to making
+	dependency injection work in Angular. Module methods such as factory,
+	service, directive, etc. register these items with the injector. When
+	you inject something (e.g., a service into a controller), the injector
+	will lookup and then instantiate the service (if it wasn't instantiated
+	already -- if it was, it will return the already-instantiated object).
+
+	If for some reason you really needed to dynamically inject a service
+	into, say, a controller, see
+	https://stackoverflow.com/a/14418384/215945 for an example of how to do
+	that. See also https://stackoverflow.com/a/14743553/215945.</p>
+https://stackoverflow.com/questions/16499358/explain-please-angularjs-injector-with-a-clear-example
+<p>function MyCtrl($scope, $injector) { $scope.doSomething =<br>
+	function(someService) {<br> var service = $injector.get(someService) //
+	someService contains the name of a service service.value += 10 <br>}</p>

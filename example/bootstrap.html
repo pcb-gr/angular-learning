@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+<body>
+	<div ng-controller="LoginMessage">{{message}}</div>
+	<script src="../libs/angular.js"></script>
+	<script>
+		angular.module('example', []).controller('LoginMessage',
+				function($scope) {
+					$scope.message = 'Welcome to Members Area!';
+				});
+		angular.bootstrap(document, [ 'example' ]);
+	</script>
+</body>
+</html>
